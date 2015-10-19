@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace TurnoverRedrover
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void turnover_Trl_TableBindingNavigatorSaveItem_Click(object sender, EventArgs e)
+        {
+            this.Validate();
+            this.turnover_Trl_TableBindingSource.EndEdit();
+            this.tableAdapterManager.UpdateAll(this.betterDatabaseDataSet);
+            this.betterDatabaseDataSet.AcceptChanges();
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'betterDatabaseDataSet.Turnover_Trl_Table' table. You can move, or remove it, as needed.
+            this.turnover_Trl_TableTableAdapter.Fill(this.betterDatabaseDataSet.Turnover_Trl_Table);
+            colorMe();
+        }
+
+        private void SelectAll(object sender, MouseEventArgs e)
+        {
+            tbCustomer.SelectAll();
+            tbFreightBill.SelectAll();
+            tbCapacity.SelectAll();
+            tbDriver_Name.SelectAll();
+            tbDriver_Phone1.SelectAll();
+            tbDriver_Phone2.SelectAll();
+        }
+
+        private void bindingNavigatorDeleteItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public void colorMe()
+        {
+            foreach (DataGridViewRow row in turnover_Trl_TableDataGridView.Rows)
+            {
+                if (row.Cells[26].Value != null)
+                {
+                    string CellValue = row.Cells[26].Value.ToString();
+
+                    if (CellValue != "")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Orange;
+                        row.DefaultCellStyle.ForeColor = Color.White;
+                    }
+                    
+                }
+                if (row.Cells[28].Value != null)
+                {
+                    string CellValue = row.Cells[28].Value.ToString();
+
+                    if (CellValue != "")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Red;
+                        row.DefaultCellStyle.BackColor = Color.White;
+                    }
+                }
+                if (row.Cells[30].Value != null)
+                {
+                    string CellValue = row.Cells[30].Value.ToString();
+
+                    if (CellValue != "")
+                    {
+                        row.DefaultCellStyle.BackColor = Color.Green;
+                        row.DefaultCellStyle.BackColor = Color.White;
+                    }
+                }
+                //if (row.Cells["whatever index"].Value != null)
+                //{
+                //    string CellValue = row.Cells["whatever index"].Value.ToString();
+
+                //    if (CellValue != "")
+                //    {
+                //        row.DefaultCellStyle.BackColor = Color.Orange; // alter color as desired
+                //        row.DefaultCellStyle.ForeColor = Color.White;
+                //    }
+                //}
+
+            }
+        }
+
+        private void btnApplyFilter_Click(object sender, EventArgs e)
+
+        {
+            turnover_Trl_TableBindingSource.RemoveFilter();
+
+            //  qryTurnoverAndTrailerTableAdapter.Adapter  DefaultView.RowFilter = string.Format("Field = '{0}'", tbFilter.Text);
+            if (tbDriver_Name.Text != "")
+            {
+                turnover_Trl_TableBindingSource.Filter = string.Format("Driver_Name = '{0}'", tbDriver_Name.Text);
+            }
+            if (tbFreightBill.Text != "")
+                turnover_Trl_TableBindingSource.Filter = string.Format("FB = '{0}'", tbFreightBill.Text);
+            if (tbCapacity.Text != "")
+                turnover_Trl_TableBindingSource.Filter = string.Format("Capacity = '{0}'", tbCapacity.Text);
+            if (tbTurnoverDate.Text != "")
+                turnover_Trl_TableBindingSource.Filter = string.Format("TurnoverDate = {0}", tbTurnoverDate.Text);
+            if (tbCustomer.Text != "")
+                turnover_Trl_TableBindingSource.Filter = string.Format("Customer = {0}", tbCustomer.Text);
+            if (tbDriver_Phone1.Text != "")
+                turnover_Trl_TableBindingSource.Filter = string.Format("Driver_Phone1 = {0}", tbDriver_Phone1.Text);
+            if (tbDriver_Phone2.Text != "")
+                turnover_Trl_TableBindingSource.Filter = string.Format("Driver_Phone2 = {0}", tbDriver_Phone2.Text);
+            colorMe();
+        }
+
+
+    }
+}
